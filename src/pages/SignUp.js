@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import chat from "../chat.png";
 
 const SignUp = () => {
@@ -127,12 +128,12 @@ const SignUp = () => {
 
           <div className="text-sm mt-4 text-gray-500 text-center">
             <p>Already a member?</p>
-            <a
-              href="/signin"
+            <Link
+              to="/signin"
               className="font-semibold text-indigo-600 hover:text-indigo-800"
             >
               Sign in here
-            </a>
+            </Link>
           </div>
 
           <div className="text-sm mt-2 text-gray-500 text-center">
