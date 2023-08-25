@@ -31,24 +31,27 @@ function Channel({ id, channelName }) {
       clearTimeout(debounceTimeout);
     }
     const newDebounceTimeout = setTimeout(async () => {
-      console.log(email)
+      console.log(email);
       try {
-        const response = await fetch("https://c-project-backend.onrender.com/search-Users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({userEmail: email,})
-        })
-        if(response.status === 404){
-          console.log("user not found")
-        }else if(response.status === 200){
-          const data = await response.json()
-          console.log(data)
-          setMatchingEmails(data.users)
+        const response = await fetch(
+          "https://c-project-backend.onrender.com/search-Users",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userEmail: email }),
+          }
+        );
+        if (response.status === 404) {
+          console.log("user not found");
+        } else if (response.status === 200) {
+          const data = await response.json();
+          console.log(data);
+          setMatchingEmails(data.users);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }, 300); // Debounce time in milliseconds
     setDebounceTimeout(newDebounceTimeout);
@@ -56,25 +59,28 @@ function Channel({ id, channelName }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(email === ""){
-      return
-    }else{
+    if (email === "") {
+      return;
+    } else {
       try {
-        const response = await fetch("https://c-project-backend.onrender.com/invite-to-channel", {
+        const response = await fetch(
+          "https://c-project-backend.onrender.com/invite-to-channel",
+          {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
-            body: JSON.stringify({channelId: id, email: email,})
-          })
-  
-          const data = response.json();
-          console.log(data)
-          setEmail("");
-          setMatchingEmails([]);
-          setShowInviteForm(false);
+            body: JSON.stringify({ channelId: id, email: email }),
+          }
+        );
+
+        const data = response.json();
+        console.log(data);
+        setEmail("");
+        setMatchingEmails([]);
+        setShowInviteForm(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
       setEmail("");
       setMatchingEmails([]);
@@ -89,7 +95,7 @@ function Channel({ id, channelName }) {
         name: channelName,
       })
     );
-    dispatch(setCurrDirect({}))
+    dispatch(setCurrDirect({}));
   };
 
   return (
@@ -102,7 +108,10 @@ function Channel({ id, channelName }) {
           <HashtagIcon className="h-5 mr-2" /> {channelName}
         </div>
         <div>
-          <PlusIcon className="h-6 ml-auto cursor-pointer hover:text-white" onClick={addMembers} />
+          <PlusIcon
+            className="h-6 ml-auto cursor-pointer hover:text-white"
+            onClick={addMembers}
+          />
         </div>
       </div>
 
@@ -128,7 +137,9 @@ function Channel({ id, channelName }) {
                 {matchingEmails.map((matchingEmail) => (
                   <li
                     key={matchingEmail.email}
-                    onClick={() => handleMatchingEmailClick(matchingEmail.email)}
+                    onClick={() =>
+                      handleMatchingEmailClick(matchingEmail.email)
+                    }
                     className="cursor-pointer text-blue-500 hover:underline"
                   >
                     {matchingEmail.email}

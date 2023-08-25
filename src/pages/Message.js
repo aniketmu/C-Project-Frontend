@@ -10,10 +10,8 @@ function Message({ id, message, timestamp, name, email, photoURL, file }) {
     user: state.user,
   }));
 
-  // Determine whether the message is sent by the current user
   const isCurrentUserMessage = user.email === email;
 
-  // Apply styles for message alignment
   const messageStyle = {
     borderRadius: "8px",
     padding: "10px",
@@ -24,7 +22,11 @@ function Message({ id, message, timestamp, name, email, photoURL, file }) {
   return (
     <div style={messageStyle}>
       <div className="file-document">
-        <div className={`message-info flex items-center space-x-2 ${isCurrentUserMessage ? "justify-end" : ""}`}>
+        <div
+          className={`message-info flex items-center space-x-2 ${
+            isCurrentUserMessage ? "justify-end" : ""
+          }`}
+        >
           <img src={photoURL} alt={name} className="h-8 w-8 rounded-full" />
           <div>
             <h4 className="text-pink-300 font-semibold text-lg">{name}</h4>

@@ -28,8 +28,8 @@ const DashBoard = () => {
   const [matchingEmails, setMatchingEmails] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [newChannelName, setNewChannelName] = useState(""); // New state for channel name input
-  const [isAddingChannel, setIsAddingChannel] = useState(false); // State to control the modal or input box
+  const [newChannelName, setNewChannelName] = useState(""); 
+  const [isAddingChannel, setIsAddingChannel] = useState(false); 
 
   const { user } = useSelector((state) => ({
     user: state.user,
@@ -85,7 +85,6 @@ const DashBoard = () => {
 
   const handleAddChannel = async () => {
     if (newChannelName.trim() === "") {
-      // Handle empty channel name
       console.log("Channel name cannot be empty");
       return;
     }
@@ -107,8 +106,8 @@ const DashBoard = () => {
       console.log(error);
     }
 
-    setIsAddingChannel(false); // Close the input box or modal
-    setNewChannelName(""); // Clear the input
+    setIsAddingChannel(false); 
+    setNewChannelName(""); 
   };
 
   useEffect(() => {
@@ -252,7 +251,6 @@ const DashBoard = () => {
           <Chat />
         </div>
       </div>
-      {/* Modal or input box for adding a new channel */}
       {isAddingChannel && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-800 bg-opacity-60 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg">

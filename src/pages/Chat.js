@@ -72,7 +72,7 @@ function Chat() {
   }, [currentChannelId]);
 
   const sendMessage = async (e) => {
-    console.log("init")
+    console.log("init");
     e.preventDefault();
     setMsgLoading(true);
 
@@ -164,21 +164,24 @@ function Chat() {
     const fetchMessages = async () => {
       if (currentChannelId) {
         try {
-          const response = await fetch("https://c-project-backend.onrender.com/messages", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ channelId: currentChannelId }),
-          });
+          const response = await fetch(
+            "https://c-project-backend.onrender.com/messages",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ channelId: currentChannelId }),
+            }
+          );
 
           if (response.status === 401) {
             console.log("No messages Found");
           } else if (response.status === 200) {
             const data = await response.json();
             const messages = data.messages.messages;
-            dispatch(setMessages(messages)); // Update Redux store
-            setLocalMessages(messages); // Update local state for UI
+            dispatch(setMessages(messages)); 
+            setLocalMessages(messages); 
           }
         } catch (error) {
           console.error("Error fetching messages:", error);
@@ -221,11 +224,10 @@ function Chat() {
           />
         ))}
         <div ref={messageContainerRef}></div>
-        <div className="pb-16" /> {/* ref={chatRef} */}
+        <div className="pb-16" />
       </main>
       <div className="flex items-center p-2.5 bg-[#40444b] mx-5 mb-7 rounded-lg">
         <form className="flex-grow flex items-center space-x-2">
-          {/* Emoji Picker Button */}
           <button
             type="button"
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
@@ -234,7 +236,6 @@ function Chat() {
             😄
           </button>
 
-          {/* File Picker */}
           <input
             type="file"
             id="fileInput"
@@ -248,14 +249,12 @@ function Chat() {
             📎
           </label>
 
-          {/* Display Selected File */}
           {channelFile && (
             <div className="text-[#dcddde] text-sm">
               Selected File: {channelFile.name}
             </div>
           )}
 
-          {/* Input Text Field */}
           <input
             type="text"
             placeholder="Type Text"
@@ -264,7 +263,6 @@ function Chat() {
             onChange={(e) => handleChange(e)}
           />
 
-          {/* Send Button */}
           <button type="submit" onClick={sendMessage}>
             <img
               src={send}
@@ -273,8 +271,6 @@ function Chat() {
             />
           </button>
 
-          {/* Emoji Picker */}
-          {/* Emoji Picker Container */}
           {showEmojiPicker && (
             <div className="absolute bottom-12 z-10 right-0 lg:right-auto lg:left-0">
               <Picker

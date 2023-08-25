@@ -6,19 +6,16 @@ import DashBoard from "./pages/DashBoard";
 import Profile from "./pages/Profile";
 
 function App() {
-
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Header />}>
-        </Route>
+        <Route exact path="/" element={<Header />}></Route>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
-
   );
 }
 

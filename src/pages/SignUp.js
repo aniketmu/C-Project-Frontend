@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import chat from "../chat.png"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import chat from "../chat.png";
 
 const SignUp = () => {
   const [user, setUser] = useState({});
-  const [emailError, setEmailError] = useState(""); // State for email error
+  const [emailError, setEmailError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setEmailError(""); // Reset email error
+    setEmailError("");
 
     try {
-      const response = await fetch("https://c-project-backend.onrender.com/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+      const response = await fetch(
+        "https://c-project-backend.onrender.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
 
       const data = await response.json();
       if (response.status === 400) {
@@ -41,11 +44,7 @@ const SignUp = () => {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src={chat}
-            alt="Your Company"
-          />
+          <img className="mx-auto h-10 w-auto" src={chat} alt="Your Company" />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Immerse yourself in an expansive world of seamless connections
           </h2>
@@ -53,9 +52,11 @@ const SignUp = () => {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
-
             <div>
-              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Name
               </label>
               <div className="mt-2">
@@ -72,7 +73,10 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Email address
               </label>
               <div className="mt-2">
@@ -92,7 +96,10 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
                 Password
               </label>
               <div className="mt-2">
@@ -117,20 +124,28 @@ const SignUp = () => {
               </button>
             </div>
           </form>
-          <div className="text-sm ">
-                  <a
-                    href="#"
-                    className="font-semibold text-yellow-500 justify-center"
-                  >
-                    On succesful Registration, you will be automatically redirected to the Sign In page.
-                  </a>
-                </div>
+
+          <div className="text-sm mt-4 text-gray-500 text-center">
+            <p>Already a member?</p>
+            <a
+              href="/signin"
+              className="font-semibold text-indigo-600 hover:text-indigo-800"
+            >
+              Sign in here
+            </a>
+          </div>
+
+          <div className="text-sm mt-2 text-gray-500 text-center">
+            <p>
+              On successful registration, you will be automatically redirected
+              to the Sign-In page.
+            </p>
+          </div>
         </div>
-        
       </div>
     </>
-  )
-}
+  );
+};
 
 export default SignUp;
 //pushed?

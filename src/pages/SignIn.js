@@ -13,8 +13,8 @@ import Cookies from "js-cookie";
 
 const SignIn = () => {
   const [user, setUser] = useState({});
-  const [emailError, setEmailError] = useState(""); // State for email error
-  const [passwordError, setPasswordError] = useState(""); // State for password error
+  const [emailError, setEmailError] = useState(""); 
+  const [passwordError, setPasswordError] = useState(""); 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,8 +24,8 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setEmailError(""); // Reset email error
-    setPasswordError(""); // Reset password error
+    setEmailError(""); 
+    setPasswordError(""); 
 
     try {
       const response = await fetch("https://c-project-backend.onrender.com/signin", {

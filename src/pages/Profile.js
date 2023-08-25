@@ -37,7 +37,6 @@ const Profile = () => {
     "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436180.jpg?w=826&t=st=1692109436~exp=1692110036~hmac=635ef58eacaac6fd5a6add7379aecc96e9eb5f850f932bf63cd2586f224df512",
   ];
 
-
   useEffect(() => {
     if (user.id) {
       (async () => {
@@ -106,74 +105,69 @@ const Profile = () => {
   return (
     <>
       <div className="flex h-screen bg-[#202225]">
-  <div className="flex flex-col space-y-3 bg-[#A4508B] p-3 min-w-max">
-    <div className="server-default hover:bg-discord_purple">
-      <Link to="/dashboard">
-        <img src={chat} alt="" className="h-5" />
-      </Link>
-    </div>
-    <hr className=" border-gray-700 border w-8 mx-auto" />
-    <div className="server-default hover:bg-[#A5A4CB] group"></div>
-  </div>
-  <div className="flex flex-col items-center max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
-    <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
-      <div className="border-b px-6 py-8">
-        <div className="text-center my-6">
-          <img
-            className="h-48 w-48 rounded-full border-4 border-white mx-auto my-6"
-            src={user.profileImage || selectedAvatar}
-            alt=""
-          />
-          <div>
-            {avatars.map((avatarUrl) => (
-              <button
-                key={avatarUrl}
-                onClick={() => handleAvatarSelect(avatarUrl)}
-                className={`w-12 h-12 rounded-full border-2 border-transparent ${
-                  selectedAvatar === avatarUrl ? "border-blue-500" : ""
-                }`}
-                style={{
-                  backgroundImage: `url(${avatarUrl})`,
-                  backgroundSize: "cover",
-                }}
-              />
-            ))}
+        <div className="flex flex-col space-y-3 bg-[#A4508B] p-3 min-w-max">
+          <div className="server-default hover:bg-discord_purple">
+            <Link to="/dashboard">
+              <img src={chat} alt="" className="h-5" />
+            </Link>
           </div>
-          <div className="py-4">
-            <h3 className="font-bold text-4xl mb-2">{user.name}</h3>
-            <div className="inline-flex text-gray-700 items-center">
-              <span className="ml-2">{user.email}</span>
+          <hr className=" border-gray-700 border w-8 mx-auto" />
+          <div className="server-default hover:bg-[#A5A4CB] group"></div>
+        </div>
+        <div className="flex flex-col items-center max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
+          <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
+            <div className="border-b px-6 py-8">
+              <div className="text-center my-6">
+                <img
+                  className="h-48 w-48 rounded-full border-4 border-white mx-auto my-6"
+                  src={user.profileImage || selectedAvatar}
+                  alt=""
+                />
+                <div>
+                  {avatars.map((avatarUrl) => (
+                    <button
+                      key={avatarUrl}
+                      onClick={() => handleAvatarSelect(avatarUrl)}
+                      className={`w-12 h-12 rounded-full border-2 border-transparent ${
+                        selectedAvatar === avatarUrl ? "border-blue-500" : ""
+                      }`}
+                      style={{
+                        backgroundImage: `url(${avatarUrl})`,
+                        backgroundSize: "cover",
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="py-4">
+                  <h3 className="font-bold text-4xl mb-2">{user.name}</h3>
+                  <div className="inline-flex text-gray-700 items-center">
+                    <span className="ml-2">{user.email}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
+            <div className="border-b px-6 py-6">
+              <h3 className="font-bold text-2xl mb-6">Channels</h3>
+              <div className="flex items-center space-x-4">
+                <div className="flex-grow">
+                  {channels?.map((channel) => (
+                    <h4 className="font-semibold text-xl" key={channel._id}>
+                      {channel.name}
+                    </h4>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="mt-8 max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
-      <div className="border-b px-6 py-6">
-        <h3 className="font-bold text-2xl mb-6">Channels</h3>
-        <div className="flex items-center space-x-4">
-          <div className="flex-grow">
-            {channels?.map((channel) => (
-              <h4 className="font-semibold text-xl" key={channel._id}>
-                {channel.name}
-              </h4>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
     </>
   );
 };
 
 export default Profile;
-
-
-
-
 
 // const handlePictureUpload = async () => {
 //     if (imageFile) {
