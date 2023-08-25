@@ -26,9 +26,9 @@ Users will be able to add Members to the channel by clicking + button besides th
 Upon clicking on a Channel, messages belonging to that channel will populate on the screen. Users can type in and send newer messages. 
 ![channel3](https://github.com/aniketmu/C-Project-Frontend/assets/135434733/9f49075b-f468-4d07-bde7-78f6af461e24)
 The sent message will be rendered on the screen real-time on other logged users screen as seen in the following dahboard of another logged in user:
+![channel4](https://github.com/aniketmu/C-Project-Frontend/assets/135434733/108b9178-d119-4423-b53d-178a948e506d)
 ![channel5](https://github.com/aniketmu/C-Project-Frontend/assets/135434733/786dfab1-619d-437c-a6cb-84312a0eaaea)
 ![channel6](https://github.com/aniketmu/C-Project-Frontend/assets/135434733/4793be0f-f2c3-4911-b25b-5665d3c0e154)
-![channel4](https://github.com/aniketmu/C-Project-Frontend/assets/135434733/108b9178-d119-4423-b53d-178a948e506d)
 Users can visit their profile by clicking the Profile button on the Dashboard.
 ![profile](https://github.com/aniketmu/C-Project-Frontend/assets/135434733/5b4140f0-b851-4cd7-a178-d6f092084918)
 Here they can choose to assign themselves an avatar.
