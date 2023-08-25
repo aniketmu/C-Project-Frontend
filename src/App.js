@@ -3,9 +3,7 @@ import Header from "./pages/Header";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import DashBoard from "./pages/DashBoard";
-import Cookies from 'js-cookie'; // Import the js-cookie library
 import Profile from "./pages/Profile";
-import { requireAuth } from "./utils/auth";
 
 function App() {
 
@@ -25,4 +23,3 @@ function App() {
 }
 
 export default App;
-

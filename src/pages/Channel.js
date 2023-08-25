@@ -33,7 +33,7 @@ function Channel({ id, channelName }) {
     const newDebounceTimeout = setTimeout(async () => {
       console.log(email)
       try {
-        const response = await fetch("https://backend-prelim.onrender.com/search-Users", {
+        const response = await fetch("https://c-project-backend.onrender.com/search-Users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -60,7 +60,7 @@ function Channel({ id, channelName }) {
       return
     }else{
       try {
-        const response = await fetch("https://backend-prelim.onrender.com/invite-to-channel", {
+        const response = await fetch("https://c-project-backend.onrender.com/invite-to-channel", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -119,7 +119,7 @@ function Channel({ id, channelName }) {
             type="submit"
             className="bg-blue-500 text-white px-2 py-1 rounded-md"
           >
-            Invite
+            Add
           </button>
           {matchingEmails.length > 0 && (
             <div className="mt-2">

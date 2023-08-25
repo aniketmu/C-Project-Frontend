@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { useEffect } from 'react';
-import { changeUserImage, changeUserEmail, changeUserName, changeUserId, setChannels } from '../store/actions';
+import { useEffect } from "react";
+import {
+  changeUserImage,
+  changeUserEmail,
+  changeUserName,
+  changeUserId,
+  setChannels,
+} from "../store/actions";
 import { useDispatch } from "react-redux";
-import Cookies from 'js-cookie';
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import chat from "../chat.png";
 
 const Profile = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
@@ -12,11 +20,11 @@ const Profile = () => {
   const { user } = useSelector((state) => ({
     user: state.user,
   }));
-  
+
   const { channels } = useSelector((state) => ({
-    channels: state.channels
+    channels: state.channels,
   }));
-  
+
   const avatars = [
     "https://cdn.pixabay.com/photo/2018/08/28/12/41/avatar-3637425_1280.png",
     "https://cdn.pixabay.com/photo/2014/04/02/10/54/person-304893_1280.png",
@@ -29,29 +37,20 @@ const Profile = () => {
     "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436180.jpg?w=826&t=st=1692109436~exp=1692110036~hmac=635ef58eacaac6fd5a6add7379aecc96e9eb5f850f932bf63cd2586f224df512",
   ];
 
-  useEffect(() => {
-    const storedUserId = Cookies.get('userId');
-    const storedUserEmail = Cookies.get('userEmail');
-    const storedUserName = Cookies.get('userName');
-
-    // Update Redux state using the retrieved data
-    dispatch(changeUserId(storedUserId));
-    dispatch(changeUserEmail(storedUserEmail));
-    dispatch(changeUserName(storedUserName));
-
-    console.log("init state 0", storedUserId, storedUserEmail, storedUserName);
-  }, []);
 
   useEffect(() => {
     if (user.id) {
       (async () => {
-        const response = await fetch("https://backend-prelim.onrender.com/channel", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id })
-        });
+        const response = await fetch(
+          "https://c-project-backend.onrender.com/channel",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: user.id }),
+          }
+        );
 
         if (response.status === 404) {
           return;
@@ -66,71 +65,109 @@ const Profile = () => {
   const handleAvatarSelect = async (avatarUrl) => {
     setSelectedAvatar(avatarUrl);
     try {
-        const response = await fetch("https://backend-prelim.onrender.com/update-profile-image", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({userId: user.id, photoUrl: selectedAvatar})
-        })
-
-        if(response.status === 404){
-            alert("Some Error happened")
-        }else if(response.status === 500){
-            alert("Some error occurred")
-        }else if(response.status === 401){
-            console.log("Profile Picture changed")
-            dispatch(changeUserImage(selectedAvatar))
+      const response = await fetch(
+        "https://c-project-backend.onrender.com/update-profile-image",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id, photoUrl: avatarUrl }),
         }
-      } catch (error) {
-        console.log(error)
+      );
+
+      if (response.status === 404) {
+        alert("Some Error happened");
+      } else if (response.status === 500) {
+        alert("Some error occurred");
+      } else if (response.status === 200) {
+        console.log("Profile Picture changed");
+        const data = response.json();
+        dispatch(changeUserImage(avatarUrl));
+        Cookies.set("profileImage", avatarUrl);
       }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  useEffect(() => {
+    const storedUserId = Cookies.get("userId");
+    const storedUserEmail = Cookies.get("userEmail");
+    const storedUserName = Cookies.get("userName");
+    const storedprofileImage = Cookies.get("profileImage");
+
+    dispatch(changeUserId(storedUserId));
+    dispatch(changeUserEmail(storedUserEmail));
+    dispatch(changeUserName(storedUserName));
+    dispatch(changeUserImage(storedprofileImage));
+  }, []);
+
   return (
-    <div className="flex flex-col items-center h-screen bg-[#202225]">
-      <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
-        <div className="border-b px-6 py-8">
-          <div className="text-center my-6">
-            <img className="h-48 w-48 rounded-full border-4 border-white mx-auto my-6" src={selectedAvatar || user.image} alt="" />
-            <div>
-              {avatars.map((avatarUrl) => (
-                <button
-                  key={avatarUrl}
-                  onClick={() => handleAvatarSelect(avatarUrl)}
-                  className={`w-12 h-12 rounded-full border-2 border-transparent ${
-                    selectedAvatar === avatarUrl ? 'border-blue-500' : ''
-                  }`}
-                  style={{ backgroundImage: `url(${avatarUrl})`, backgroundSize: 'cover' }}
-                />
-              ))}
-            </div>
-            <div className="py-4">
-              <h3 className="font-bold text-4xl mb-2">{user.name}</h3>
-              <div className="inline-flex text-gray-700 items-center">
-                <span className="ml-2">{user.email}</span>
-              </div>
-            </div>
+    <>
+      <div className="flex h-screen bg-[#202225]">
+  <div className="flex flex-col space-y-3 bg-[#A4508B] p-3 min-w-max">
+    <div className="server-default hover:bg-discord_purple">
+      <Link to="/dashboard">
+        <img src={chat} alt="" className="h-5" />
+      </Link>
+    </div>
+    <hr className=" border-gray-700 border w-8 mx-auto" />
+    <div className="server-default hover:bg-[#A5A4CB] group"></div>
+  </div>
+  <div className="flex flex-col items-center max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
+    <div className="max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
+      <div className="border-b px-6 py-8">
+        <div className="text-center my-6">
+          <img
+            className="h-48 w-48 rounded-full border-4 border-white mx-auto my-6"
+            src={user.profileImage || selectedAvatar}
+            alt=""
+          />
+          <div>
+            {avatars.map((avatarUrl) => (
+              <button
+                key={avatarUrl}
+                onClick={() => handleAvatarSelect(avatarUrl)}
+                className={`w-12 h-12 rounded-full border-2 border-transparent ${
+                  selectedAvatar === avatarUrl ? "border-blue-500" : ""
+                }`}
+                style={{
+                  backgroundImage: `url(${avatarUrl})`,
+                  backgroundSize: "cover",
+                }}
+              />
+            ))}
           </div>
-        </div>
-      </div>
-      <div className="mt-8 max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
-        <div className="border-b px-6 py-6">
-          <h3 className="font-bold text-2xl mb-6">Channels</h3>
-          <div className="flex items-center space-x-4">
-            <div className="flex-grow">
-              {channels?.map((channel) => (
-                <h4 className="font-semibold text-xl" key={channel._id}>
-                  {channel.name}
-                </h4>
-              ))}
+          <div className="py-4">
+            <h3 className="font-bold text-4xl mb-2">{user.name}</h3>
+            <div className="inline-flex text-gray-700 items-center">
+              <span className="ml-2">{user.email}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div className="mt-8 max-w-xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg w-full md:w-2/3 xl:w-1/2">
+      <div className="border-b px-6 py-6">
+        <h3 className="font-bold text-2xl mb-6">Channels</h3>
+        <div className="flex items-center space-x-4">
+          <div className="flex-grow">
+            {channels?.map((channel) => (
+              <h4 className="font-semibold text-xl" key={channel._id}>
+                {channel.name}
+              </h4>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </>
   );
-}
+};
 
 export default Profile;
 

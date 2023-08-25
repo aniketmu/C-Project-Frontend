@@ -3,34 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import chat from "../chat.png"
 
 const SignUp = () => {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
+  const [emailError, setEmailError] = useState(""); // State for email error
   const navigate = useNavigate();
+
   const handleChange = (e) => {
-    setUser({...user, [e.target.name] : e.target.value})
+    setUser({ ...user, [e.target.name]: e.target.value });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setEmailError(""); // Reset email error
+
     try {
-      const response = await fetch("https://backend-prelim.onrender.com/signup", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
+      const response = await fetch("https://c-project-backend.onrender.com/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
       });
 
       const data = await response.json();
       if (response.status === 400) {
-          alert("Email is already in use. Please choose another email.");
+        setEmailError("Email is already in use. Please choose another email.");
       } else if (response.status === 200) {
-          console.log("User created successfully:", data);
-          setUser({});
-          navigate("/")
+        console.log("User created successfully:", data);
+        setUser({});
+        navigate("/");
       }
-  } catch (error) {
+    } catch (error) {
       console.log("Error:", error);
-  }
+    }
   };
 
   return (
@@ -43,23 +47,22 @@ const SignUp = () => {
             alt="Your Company"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Immerse yourself in an expansive world of seamless connections
+            Immerse yourself in an expansive world of seamless connections
           </h2>
         </div>
-        
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
 
-          <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                 Name
               </label>
               <div className="mt-2">
                 <input
                   id="name"
                   name="name"
-                  type="name"
+                  type="text"
                   autoComplete="name"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -82,17 +85,16 @@ const SignUp = () => {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   onChange={(e) => handleChange(e)}
                 />
+                {emailError && (
+                  <span className="text-red-500 text-xs">{emailError}</span>
+                )}
               </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                  Password
-                </label>
-                <div className="text-sm">
-                </div>
-              </div>
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                Password
+              </label>
               <div className="mt-2">
                 <input
                   id="password"
@@ -115,11 +117,20 @@ const SignUp = () => {
               </button>
             </div>
           </form>
-
+          <div className="text-sm ">
+                  <a
+                    href="#"
+                    className="font-semibold text-yellow-500 justify-center"
+                  >
+                    On succesful Registration, you will be automatically redirected to the Sign In page.
+                  </a>
+                </div>
         </div>
+        
       </div>
     </>
   )
 }
 
-export default SignUp
+export default SignUp;
+//pushed?
