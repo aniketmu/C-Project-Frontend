@@ -27,11 +27,8 @@ import t_channel4 from "../t-channel4.png";
 import t_channel5 from "../t-channel5.png";
 
 function Chat() {
-  const [text, setText] = useState({});
-  const [msgLoading, setMsgLoading] = useState(false);
+  const [text, setText] = useState({ content: ""});
   const [localMessages, setLocalMessages] = useState([]);
-  const [localDirect, setLocalDirect] = useState([]);
-  const [direct, setDirect] = useState({});
   const [file, setFile] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [channelFile, setChannelFile] = useState("");
@@ -74,9 +71,8 @@ function Chat() {
   const sendMessage = async (e) => {
     console.log("init");
     e.preventDefault();
-    setMsgLoading(true);
 
-    if (!channelFile && text.content === "") {
+    if (!channelFile && (!text.content || text.content.trim() === "")) { // Check if the input is empty or contains only spaces
       return;
     } else {
       if (channelFile) {
@@ -89,7 +85,6 @@ function Chat() {
             `https://c-project-backend.onrender.com/chat-message-file`,
             data
           );
-
           const newMessage = {
             _id: uuid(),
             content: text.content,
@@ -99,16 +94,14 @@ function Chat() {
               id: user.id,
             },
           };
-
+  
           socket.emit("chatMessage", {
             channelId: currentChannelId,
             message: newMessage,
           });
-
+  
           setChannelFile("");
-          setText({});
-
-          return response.message;
+          setText({ content: "" }); // Clear the text input
         } catch (error) {
           console.log(error);
         }
@@ -120,14 +113,13 @@ function Chat() {
           timestamp: new Date().toISOString(),
           sender: user.id,
         };
-
+  
         socket.emit("chatMessage", {
           channelId: currentChannelId,
           message: newMessage,
         });
-        setText({});
+        setText({ content: "" }); // Clear the text input
         setChannelFile("");
-        setMsgLoading(false);
       }
     }
   };

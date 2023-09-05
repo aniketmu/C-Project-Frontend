@@ -28,8 +28,9 @@ const DashBoard = () => {
   const [matchingEmails, setMatchingEmails] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [newChannelName, setNewChannelName] = useState(""); 
-  const [isAddingChannel, setIsAddingChannel] = useState(false); 
+  const [newChannelName, setNewChannelName] = useState(""); // New state for channel name input
+  const [isAddingChannel, setIsAddingChannel] = useState(false); // State to control the modal or input box
+  const [channelAdd, setChannelAdd] = useState(0);
 
   const { user } = useSelector((state) => ({
     user: state.user,
@@ -61,13 +62,16 @@ const DashBoard = () => {
 
     const newDebounceTimeout = setTimeout(async () => {
       try {
-        const response = await fetch("https://c-project-backend.onrender.com/search-Users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userEmail: email }),
-        });
+        const response = await fetch(
+          "https://c-project-backend.onrender.com/search-Users",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userEmail: email }),
+          }
+        );
         if (response.status === 404) {
           console.log("user not found");
         } else if (response.status === 200) {
@@ -85,29 +89,35 @@ const DashBoard = () => {
 
   const handleAddChannel = async () => {
     if (newChannelName.trim() === "") {
+      // Handle empty channel name
       console.log("Channel name cannot be empty");
       return;
     }
     try {
-      const response = await fetch("https://c-project-backend.onrender.com/add-channel", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: newChannelName, userId: user.id }),
-      });
+      const response = await fetch(
+        "https://c-project-backend.onrender.com/add-channel",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newChannelName, userId: user.id }),
+        }
+      );
 
       if (response.status === 500) {
-        console.log("Channel could not be create");
+        console.log("Channel could not be created");
       } else if (response.status === 200) {
         const data = await response.json();
+        console.log("Channel added successfully"); // Add this line
+        setChannelAdd(channelAdd + 1);
       }
     } catch (error) {
       console.log(error);
     }
 
-    setIsAddingChannel(false); 
-    setNewChannelName(""); 
+    setIsAddingChannel(false); // Close the input box or modal
+    setNewChannelName(""); // Clear the input
   };
 
   useEffect(() => {
@@ -133,13 +143,16 @@ const DashBoard = () => {
     if (user.id) {
       (async () => {
         setLoading(true);
-        const response = await fetch("https://c-project-backend.onrender.com/channel", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        });
+        const response = await fetch(
+          "https://c-project-backend.onrender.com/channel",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: user.id }),
+          }
+        );
 
         if (response.status === 404) {
           setLoading(false);
@@ -151,7 +164,7 @@ const DashBoard = () => {
         }
       })();
     }
-  }, [user.id]);
+  }, [user.id, channelAdd]); // Ensure [channelAdd] is in the dependency array
 
   const handleSignOut = () => {
     Cookies.remove("token");
@@ -168,27 +181,26 @@ const DashBoard = () => {
         <div className="flex flex-col space-y-3 bg-[#A4508B] p-3 min-w-max">
           <div className="server-default hover:bg-discord_purple">
             <Link to="/dashboard">
-            <img src={chat} alt="" className="h-5" />
+              <img src={chat} alt="" className="h-5" />
             </Link>
           </div>
           <hr className=" border-gray-700 border w-8 mx-auto" />
           <div className="server-default hover:bg[#A5A4CB] group"></div>
         </div>
 
-        <div className="bg-[#002244] flex flex-col min-w-max">
+        <div className="bg-[#002244] flex flex-col w-1/4 sm:w-auto lg:w-auto">
           <h2 className="flex text-white font-bold text-sm items-center justify-between border-b border-gray-800 p-4 hover:bg-[#34373C] cursor-pointer">
             Welcome {user.name?.split(" ")[0]}
           </h2>
           <a
             href="#_"
-            class="relative p-0.5 inline-flex items-center justify-center font-bold overflow-hidden group rounded-md"
-            onClick={() => navigate("/profile")}
+            className="relative p-0.5 inline-flex items-center justify-center font-bold overflow-hidden group rounded-md"
           >
-            <span class="w-full h-full bg-gradient-to-br from-[#ff8a05] via-[#ff5478] to-[#ff00c6] group-hover:from-[#ff00c6] group-hover:via-[#ff5478] group-hover:to-[#ff8a05] absolute"></span>
-            <span class="relative px-6 py-3 transition-all ease-out rounded-md group-hover:bg-opacity-0 duration-400">
+            <span className="w-full h-full bg-gradient-to-br from-[#ff8a05] via-[#ff5478] to-[#ff00c6] group-hover:from-[#ff00c6] group-hover:via-[#ff5478] group-hover:to-[#ff8a05] absolute"></span>
+            <span className="relative px-6 py-3 transition-all ease-out rounded-md group-hover:bg-opacity-0 duration-400">
               <span
-                class="relative text-white"
-                
+                className="relative text-white"
+                onClick={() => navigate("/profile")}
               >
                 Profile
               </span>
@@ -225,20 +237,20 @@ const DashBoard = () => {
               >
                 <a
                   href="#_"
-                  class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded-md shadow-2xl group"
+                  className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded-md shadow-2xl group"
                 >
-                  <span class="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
+                  <span className="absolute inset-0 w-full h-full transition duration-300 ease-out opacity-0 bg-gradient-to-br from-pink-600 via-purple-700 to-blue-400 group-hover:opacity-100"></span>
 
-                  <span class="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
+                  <span className="absolute top-0 left-0 w-full bg-gradient-to-b from-white to-transparent opacity-5 h-1/3"></span>
 
-                  <span class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent opacity-5"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent opacity-5"></span>
 
-                  <span class="absolute bottom-0 left-0 w-4 h-full bg-gradient-to-r from-white to-transparent opacity-5"></span>
+                  <span className="absolute bottom-0 left-0 w-4 h-full bg-gradient-to-r from-white to-transparent opacity-5"></span>
 
-                  <span class="absolute bottom-0 right-0 w-4 h-full bg-gradient-to-l from-white to-transparent opacity-5"></span>
-                  <span class="absolute inset-0 w-full h-full border border-white rounded-md opacity-10"></span>
-                  <span class="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
-                  <span class="relative" onClick={handleSignOut}>
+                  <span className="absolute bottom-0 right-0 w-4 h-full bg-gradient-to-l from-white to-transparent opacity-5"></span>
+                  <span className="absolute inset-0 w-full h-full border border-white rounded-md opacity-10"></span>
+                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-5"></span>
+                  <span className="relative" onClick={handleSignOut}>
                     Sign Out
                   </span>
                 </a>
@@ -251,6 +263,7 @@ const DashBoard = () => {
           <Chat />
         </div>
       </div>
+      {/* Modal or input box for adding a new channel */}
       {isAddingChannel && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-800 bg-opacity-60 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg">
