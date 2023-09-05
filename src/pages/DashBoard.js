@@ -10,7 +10,7 @@ import {
   MicrophoneIcon,
   PhoneIcon,
 } from "@heroicons/react/solid";
-import { setChannels, setDirect } from "../store/actions";
+import { setChannels, setDirect, setCurrChannel } from "../store/actions";
 import {
   changeUserEmail,
   changeUserName,
@@ -28,8 +28,8 @@ const DashBoard = () => {
   const [matchingEmails, setMatchingEmails] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [newChannelName, setNewChannelName] = useState(""); // New state for channel name input
-  const [isAddingChannel, setIsAddingChannel] = useState(false); // State to control the modal or input box
+  const [newChannelName, setNewChannelName] = useState(""); 
+  const [isAddingChannel, setIsAddingChannel] = useState(false); 
   const [channelAdd, setChannelAdd] = useState(0);
 
   const { user } = useSelector((state) => ({
@@ -109,15 +109,15 @@ const DashBoard = () => {
         console.log("Channel could not be created");
       } else if (response.status === 200) {
         const data = await response.json();
-        console.log("Channel added successfully"); // Add this line
+        console.log("Channel added successfully");
         setChannelAdd(channelAdd + 1);
       }
     } catch (error) {
       console.log(error);
     }
 
-    setIsAddingChannel(false); // Close the input box or modal
-    setNewChannelName(""); // Clear the input
+    setIsAddingChannel(false);
+    setNewChannelName(""); 
   };
 
   useEffect(() => {
@@ -164,7 +164,7 @@ const DashBoard = () => {
         }
       })();
     }
-  }, [user.id, channelAdd]); // Ensure [channelAdd] is in the dependency array
+  }, [user.id, channelAdd]);
 
   const handleSignOut = () => {
     Cookies.remove("token");
@@ -200,7 +200,9 @@ const DashBoard = () => {
             <span className="relative px-6 py-3 transition-all ease-out rounded-md group-hover:bg-opacity-0 duration-400">
               <span
                 className="relative text-white"
-                onClick={() => navigate("/profile")}
+                onClick={() => {navigate("/profile"); dispatch(
+                  setCurrChannel({})
+                )} }
               >
                 Profile
               </span>
@@ -263,7 +265,7 @@ const DashBoard = () => {
           <Chat />
         </div>
       </div>
-      {/* Modal or input box for adding a new channel */}
+
       {isAddingChannel && (
         <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-gray-800 bg-opacity-60 z-50">
           <div className="bg-white p-4 rounded-lg shadow-lg">

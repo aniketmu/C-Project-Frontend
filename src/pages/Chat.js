@@ -101,7 +101,7 @@ function Chat() {
           });
   
           setChannelFile("");
-          setText({ content: "" }); // Clear the text input
+          setText({ content: "" }); 
         } catch (error) {
           console.log(error);
         }
@@ -118,7 +118,7 @@ function Chat() {
           channelId: currentChannelId,
           message: newMessage,
         });
-        setText({ content: "" }); // Clear the text input
+        setText({ content: "" }); 
         setChannelFile("");
       }
     }
